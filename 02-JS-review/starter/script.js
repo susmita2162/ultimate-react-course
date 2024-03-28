@@ -1,23 +1,23 @@
 const data = [
   {
     id: 1,
-    title: "The Lord of the Rings",
-    publicationDate: "1954-07-29",
-    author: "J. R. R. Tolkien",
+    title: 'The Lord of the Rings',
+    publicationDate: '1954-07-29',
+    author: 'J. R. R. Tolkien',
     genres: [
-      "fantasy",
-      "high-fantasy",
-      "adventure",
-      "fiction",
-      "novels",
-      "literature",
+      'fantasy',
+      'high-fantasy',
+      'adventure',
+      'fiction',
+      'novels',
+      'literature',
     ],
     hasMovieAdaptation: true,
     pages: 1216,
     translations: {
-      spanish: "El señor de los anillos",
-      chinese: "魔戒",
-      french: "Le Seigneur des anneaux",
+      spanish: 'El señor de los anillos',
+      chinese: '魔戒',
+      french: 'Le Seigneur des anneaux',
     },
     reviews: {
       goodreads: {
@@ -34,15 +34,15 @@ const data = [
   },
   {
     id: 2,
-    title: "The Cyberiad",
-    publicationDate: "1965-01-01",
-    author: "Stanislaw Lem",
+    title: 'The Cyberiad',
+    publicationDate: '1965-01-01',
+    author: 'Stanislaw Lem',
     genres: [
-      "science fiction",
-      "humor",
-      "speculative fiction",
-      "short stories",
-      "fantasy",
+      'science fiction',
+      'humor',
+      'speculative fiction',
+      'short stories',
+      'fantasy',
     ],
     hasMovieAdaptation: false,
     pages: 295,
@@ -62,14 +62,14 @@ const data = [
   },
   {
     id: 3,
-    title: "Dune",
-    publicationDate: "1965-01-01",
-    author: "Frank Herbert",
-    genres: ["science fiction", "novel", "adventure"],
+    title: 'Dune',
+    publicationDate: '1965-01-01',
+    author: 'Frank Herbert',
+    genres: ['science fiction', 'novel', 'adventure'],
     hasMovieAdaptation: true,
     pages: 658,
     translations: {
-      spanish: "",
+      spanish: '',
     },
     reviews: {
       goodreads: {
@@ -82,16 +82,16 @@ const data = [
   {
     id: 4,
     title: "Harry Potter and the Philosopher's Stone",
-    publicationDate: "1997-06-26",
-    author: "J. K. Rowling",
-    genres: ["fantasy", "adventure"],
+    publicationDate: '1997-06-26',
+    author: 'J. K. Rowling',
+    genres: ['fantasy', 'adventure'],
     hasMovieAdaptation: true,
     pages: 223,
     translations: {
-      spanish: "Harry Potter y la piedra filosofal",
-      korean: "해리 포터와 마법사의 돌",
-      bengali: "হ্যারি পটার এন্ড দ্য ফিলোসফার্স স্টোন",
-      portuguese: "Harry Potter e a Pedra Filosofal",
+      spanish: 'Harry Potter y la piedra filosofal',
+      korean: '해리 포터와 마법사의 돌',
+      bengali: 'হ্যারি পটার এন্ড দ্য ফিলোসফার্স স্টোন',
+      portuguese: 'Harry Potter e a Pedra Filosofal',
     },
     reviews: {
       goodreads: {
@@ -108,17 +108,17 @@ const data = [
   },
   {
     id: 5,
-    title: "A Game of Thrones",
-    publicationDate: "1996-08-01",
-    author: "George R. R. Martin",
-    genres: ["fantasy", "high-fantasy", "novel", "fantasy fiction"],
+    title: 'A Game of Thrones',
+    publicationDate: '1996-08-01',
+    author: 'George R. R. Martin',
+    genres: ['fantasy', 'high-fantasy', 'novel', 'fantasy fiction'],
     hasMovieAdaptation: true,
     pages: 835,
     translations: {
-      korean: "왕좌의 게임",
-      polish: "Gra o tron",
-      portuguese: "A Guerra dos Tronos",
-      spanish: "Juego de tronos",
+      korean: '왕좌의 게임',
+      polish: 'Gra o tron',
+      portuguese: 'A Guerra dos Tronos',
+      spanish: 'Juego de tronos',
     },
     reviews: {
       goodreads: {
@@ -142,3 +142,148 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
+
+//Destructuring
+
+const book = getBook(3);
+book;
+
+const { title, author, pages, publicationDate, genres, hasMovieAdaptation } =
+  book;
+console.log(title, author);
+
+//const primaryGenre = genres[0];
+//const secondaryGenre = genres[1];
+
+const [primaryGenre, secondaryGenre, ...otherGenres] = genres;
+
+console.log(primaryGenre, secondaryGenre, otherGenres);
+
+const newGenres = [...genres, 'epic fantasy'];
+newGenres;
+
+const updateBook = {
+  ...book,
+  // adding a new property
+  hasMoviePublicationDate: '2021-12-09',
+
+  // overwriting an existing property
+  pages: 1210,
+};
+updateBook;
+
+const summary = `${title}, a ${pages}-pages long book`;
+summary;
+
+const pageRange = pages > 1000 ? 'over a thousand' : 'less than 1000';
+pageRange;
+
+// arrow functions
+//  function getYear(str) {
+//    return str.split('_')[0];
+//  }
+
+const getYear = (str) => str.split('-')[0];
+
+console.log(getYear(publicationDate));
+
+function getTotalReviewCount(book) {
+  // the chain at reviewscount only continues if the before part is not defined
+  const librarything = book.reviews.librarything?.reviewsCount ?? 0;
+  const goodreads = book.reviews?.goodreads?.reviewsCount;
+  return goodreads + librarything;
+}
+
+console.log(getTotalReviewCount(book));
+
+// Map method
+const books = getBooks();
+
+// callback function gets called for each of the element in the array
+const x = [1, 2, 3, 4].map((el) => el * 2);
+
+console.log(x);
+
+const titles = books.map((book) => book.title);
+titles;
+
+const essentialData = books.map((book) => ({
+  title: book.title,
+  author: book.author,
+  reviewsCount: getTotalReviewCount(book),
+}));
+
+essentialData;
+
+// Filter method - filter out some elements of an array based on a condition
+// only when the condition book.pages is true then the new element gets added to the array
+
+const longBooksWithMovies = books
+  .filter((book) => book.pages > 500)
+  .filter((book) => book.hasMovieAdaptation);
+longBooksWithMovies;
+
+const adventureBooks = books
+  .filter((books) => books.genres.includes('adventure'))
+  .map((book) => book.title);
+
+adventureBooks;
+
+//Array reduce method - reduces one netire array to 1 value
+const pagesAllBooks = books.reduce((acc, book) => acc + book.pages, 0);
+pagesAllBooks;
+
+//Array Sort method - sort is not a functional method as it's mutating the original array
+const arr = [3, 7, 1, 4, 8];
+const sorted = arr.sort((a, b) => a - b);
+sorted;
+arr;
+
+//Array Sort method - taking a copy of arr2 and then sorting as it's mutating the original array
+// arr2.slice() - takes a copy of original array
+const arr2 = [3, 7, 1, 4, 8];
+const sorted2 = arr2.slice().sort((a, b) => a - b);
+sorted2;
+arr2;
+
+const sortedByPPages = books.slice().sort((a, b) => b.pages - a.pages);
+sortedByPPages;
+
+//Working with immutable arrays
+// 1. Add a book object to array
+const newBook = {
+  id: 6,
+  title: 'HP and Chamber of secrets',
+  author: 'J.K.Rowling',
+};
+const booksAfterAdd = [...books, newBook];
+booksAfterAdd;
+
+//2. Delete a book object from array
+const bookAftDel = booksAfterAdd.filter((book) => book.id !== 3);
+bookAftDel;
+
+//3. Update a book object in the array
+const bookAftUpdate = bookAftDel.map((book) =>
+  book.id === 1 ? { ...book, pages: 1210 } : book
+);
+bookAftUpdate;
+
+//ASYNCHRONOUS JS - PROMISES - TO FETCH DATA, LOAD DATA FROM AN EXTERNAL API
+//fetch returns a promise and as soon as the data is ready, we can call the then method. Then method will basically be called as soon as
+//as the promise is fulfilled.
+//Then takes the function or code that gets immediately executed once the data is ready
+fetch('https://jsonplaceholder.typicode.com/todos')
+  .then((res) => res.json())
+  .then((data) => console.log(data));
+console.log('jonas'); // gets executed first, before promise
+
+// Async/ await - above is not easy or clean code, so we use this instead of "then"
+async function getTodos() {
+  const res = await fetch('https://jsonplaceholder.typicode.com/todos');
+  const data = await res.json();
+  //console.log(data);
+  return data;
+}
+const todos = getTodos();
+console.log(todos);
